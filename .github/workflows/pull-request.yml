@@ -25,7 +25,7 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           context: .
           build-args: |
             BASE_IMAGE_TAG=${{ matrix.node-version }}-alpine
