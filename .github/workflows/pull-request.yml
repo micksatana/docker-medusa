@@ -1,0 +1,32 @@
+name: Build docker images on PR
+on: pull_request
+jobs:
+  build:
+    name: Test build for Node.js ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Set up Medusa CLI
+        run:  npm i -g @medusajs/cli
+      - name: Create a test project
+        run:  npx medusa new -y --skip-db --skip-migrations .
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64
+          context: .
+          build-args: |
+            BASE_IMAGE_TAG=${{ matrix.node-version }}-alpine
+          push: false
