@@ -17,11 +17,7 @@ jobs:
       - name: Set up Medusa CLI
         run:  npm i -g @medusajs/cli
       - name: Create a test project
-        uses: actions/checkout@v4
-        with:
-          repository: medusajs/medusa-starter-default
-          ref: master
-          path: test
+        run:  npx medusa new -y --skip-db --skip-migrations test
       - name: Copy Dockerfile to the test project
         run: cp Dockerfile .dockerignore test/
       - name: Set up QEMU
