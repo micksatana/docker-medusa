@@ -17,8 +17,13 @@ jobs:
       - name: Set up Medusa CLI
         run:  npm i -g @medusajs/cli
       - name: Create a test project
-        run:  npx medusa new -y --skip-db --skip-migrations test
-      - run: cp Dockerfile .dockerignore test/
+        uses: actions/checkout@v4
+        with:
+          repository: medusajs/medusa-starter-default
+          ref: master
+          path: test
+      - name: Copy Dockerfile to the test project
+        run: cp Dockerfile .dockerignore test/
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
