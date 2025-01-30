@@ -17,7 +17,8 @@ jobs:
       - name: Set up Medusa CLI
         run:  npm i -g @medusajs/cli
       - name: Create a test project
-        run:  npx medusa new -y --skip-db --skip-migrations .
+        run:  npx medusa new -y --skip-db --skip-migrations test
+      - run: cp Dockerfile .dockerignore test/
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -26,7 +27,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
-          context: .
+          context: test
           build-args: |
             BASE_IMAGE_TAG=${{ matrix.node-version }}-alpine
           push: false
