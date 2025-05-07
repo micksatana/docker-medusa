@@ -3,6 +3,8 @@ on:
   pull_request:
     branches:
       - main
+permissions:
+  contents: read
 jobs:
   build:
     name: Test build for Node.js ${{ matrix.node-version }}
@@ -18,9 +20,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Set up Medusa CLI
-        run: |
-          npm i -g @stdlib/number-float64-base-normalize@0.0.8
-          npm i -g @medusajs/cli
+        run: npm i -g @medusajs/cli
       - name: Create a test project
         run: npx medusa new -y --skip-db --skip-migrations test
       - name: Copy Dockerfile to the test project
