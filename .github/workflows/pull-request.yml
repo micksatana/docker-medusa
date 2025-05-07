@@ -19,10 +19,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Set up Medusa CLI
-        run: npm i -g @medusajs/cli
       - name: Create a test project
-        run: npx medusa new -y --skip-db --skip-migrations test
+        run: git clone --depth 1 git@github.com:medusajs/medusa-starter-default.git test
       - name: Copy Dockerfile to the test project
         run: cp Dockerfile .dockerignore test/
       - name: Set up QEMU
